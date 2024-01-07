@@ -28,7 +28,7 @@ class loads{
         let _errcount = 0;
         let _errors = [];
         let _oks = [];
-        let _path = "C:/Users/yuta/Documents/bot/verification system/cmds/"
+        let _path = "../cmds/"
 
         for(let i of _files){
             let _command = require(_path + i);
@@ -68,7 +68,7 @@ class loads{
         let errcount = 0;
         let errors = [];
         let oks = [];
-        let _path = "C:/Users/yuta/Documents/bot/verification system/modals/"
+        let _path = "../modals/"
 
         for(let i of files){
             let modal = require(_path + i);
@@ -101,7 +101,7 @@ class loads{
         let errcount = 0;
         let errors = [];
         let oks = [];
-        let _path = "C:/Users/yuta/Documents/bot/verification system/buttons/"
+        let _path = "../buttons/"
 
         for(let i of files){
             let button = require(_path + i);

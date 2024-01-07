@@ -4,6 +4,6 @@ module.exports = {
         description: "こんにちは"
     },
     async execute(interaction){
-        return interaction.reply("HIHIHIHIHI")
+        return await interaction.reply("HIHIHIHIHI")
     }
 }
