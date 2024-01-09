@@ -10,6 +10,43 @@ let buttons = loads.loadButtons()
 
 require('dotenv').config()
 
+const handleInteractionError = async (interaction, errorMessage) => {
+  console.error(errorMessage)
+
+  try {
+    await interaction.deferReply()
+  } catch (error) {
+    console.error('リプライの作成に失敗しました。')
+  }
+
+  await interaction.editReply({ content: '実行中にエラーが発生しました ' })
+}
+
+/**
+ *
+ * @param {String} type
+ * @param {Discord.Message} message
+ */
+
+const registerAndLoad = async (type, message) => {
+  switch (type) {
+    case 'commands':
+      await loads.registerCommands()
+      commands = loads.loadCommands()
+      break
+
+    case 'modals':
+      modals = loads.loadModals()
+      break
+
+    case 'buttons':
+      buttons = loads.loadButtons()
+      break
+  }
+
+  message.reply('registered')
+}
+
 client.once('ready', async () => {
   await loads.registerCommands()
   console.log('ready..')
@@ -18,20 +55,18 @@ client.once('ready', async () => {
 client.on('messageCreate', async (message) => {
   if (message.author.bot) return
 
-  if (message.content === 'register-commands') {
-    await loads.registerCommands()
-    commands = loads.loadCommands()
-    return message.reply('registered')
-  }
+  switch (message.content) {
+    case 'register-commands':
+      await registerAndLoad('commands', message)
+      break
 
-  if (message.content === 'register-modals') {
-    modals = loads.loadModals()
-    return message.reply('registered')
-  }
+    case 'register-modals':
+      await registerAndLoad('modals', message)
+      break
 
-  if (message.content === 'register-buttons') {
-    buttons = loads.loadButtons()
-    return message.reply('registered')
+    case 'register-buttons':
+      await registerAndLoad('buttons', message)
+      break
   }
 })
 
@@ -75,10 +110,7 @@ client.on('interactionCreate', async (interaction) => {
   try {
     await command.execute(interaction)
   } catch (err) {
-    console.log(err)
-    await interaction.reply({
-      content: '実行中にエラーが発生しました'
-    })
+    await handleInteractionError(interaction, err.message)
   }
 })
 
@@ -89,13 +121,7 @@ client.on('interactionCreate', async (interaction) => {
   try {
     await button.execute(interaction)
   } catch (err) {
-    console.log(err)
-    await interaction.reply({
-      content: '実行中にエラーが発生しました。'
-    })
-      .catch(async () => await interaction.editReply({
-        content: '実行中にエラーが発生しました。'
-      }))
+    await handleInteractionError(interaction, err.message)
   }
 })
 
@@ -106,13 +132,7 @@ client.on('interactionCreate', async (interaction) => {
   try {
     await modal.execute(interaction)
   } catch (err) {
-    console.log(err)
-    await interaction.reply({
-      content: '実行中にエラーが発生しました。'
-    })
-      .catch(async () => await interaction.editReply({
-        content: '実行中にエラーが発生しました。'
-      }))
+    await handleInteractionError(interaction, err.message)
   }
 })
 

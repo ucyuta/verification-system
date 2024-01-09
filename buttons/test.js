@@ -1,7 +1,10 @@
 module.exports = {
-    id: "button_id",
-    async execute(interaction){
-        // Async function
-        // return
-    }
+  id: 'testbutton',
+  /**
+   *
+   * @param {import("discord.js").Interaction} interaction
+   */
+  async execute (interaction) {
+    return await interaction.reply('button-clicked')
+  }
 }
