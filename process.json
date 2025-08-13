@@ -1,0 +1,9 @@
+{
+    "script": "main.js",
+    "watch": true,
+    "ignore_watch": ["process.json",".git", "files", "node-modules", ".env", "package-lock.json", "package.json", "README.md", ".gitignore", "eslintrc.js"],
+    "watch_options": {
+        "followSymlinks": false
+    },
+    "name": "verify-bot"
+}
